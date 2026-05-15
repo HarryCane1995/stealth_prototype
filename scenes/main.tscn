@@ -1,3 +1,78 @@
-[gd_scene format=3 uid="uid://bahrjp3hpd4vp"]
+[gd_scene load_steps=10 format=3 uid="uid://bahrjp3hpd4vp"]
 
-[node name="Node3D" type="Node3D" unique_id=1510492892]
+[ext_resource type="PackedScene" path="res://player/player.tscn" id="1_lyxqh"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7g62"]
+albedo_color = Color(0.18, 0.22, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e3r2y"]
+material = SubResource("StandardMaterial3D_p7g62")
+size = Vector3(24, 0.2, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j8tvj"]
+size = Vector3(24, 0.2, 24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_f5hid"]
+albedo_color = Color(0.45, 0.46, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wjpsn"]
+material = SubResource("StandardMaterial3D_f5hid")
+size = Vector3(2.5, 1.5, 2.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hkpsh"]
+size = Vector3(2.5, 1.5, 2.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_m3jxn"]
+material = SubResource("StandardMaterial3D_f5hid")
+size = Vector3(1.5, 3, 4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j0dly"]
+size = Vector3(1.5, 3, 4)
+
+[node name="Main" type="Node3D" unique_id=1510492892]
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 0, 6, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("1_lyxqh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+mesh = SubResource("BoxMesh_e3r2y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+shape = SubResource("BoxShape3D_j8tvj")
+
+[node name="Blockout" type="Node3D" parent="."]
+
+[node name="BlockA" type="StaticBody3D" parent="Blockout"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.75, -2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Blockout/BlockA"]
+mesh = SubResource("BoxMesh_wjpsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blockout/BlockA"]
+shape = SubResource("BoxShape3D_hkpsh")
+
+[node name="BlockB" type="StaticBody3D" parent="Blockout"]
+transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 4, 1.5, -3)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Blockout/BlockB"]
+mesh = SubResource("BoxMesh_m3jxn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blockout/BlockB"]
+shape = SubResource("BoxShape3D_j0dly")
+
+[node name="BlockC" type="StaticBody3D" parent="Blockout"]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.75, -7)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Blockout/BlockC"]
+mesh = SubResource("BoxMesh_wjpsn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Blockout/BlockC"]
+shape = SubResource("BoxShape3D_hkpsh")

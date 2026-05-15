@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b3d1m6f2g0q8x"]
+
+[ext_resource type="Script" path="res://player/player.gd" id="1_6e5p0"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtsm0"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bx7td"]
+albedo_color = Color(0.2, 0.55, 0.9, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xev22"]
+material = SubResource("StandardMaterial3D_bx7td")
+radius = 0.35
+height = 1.8
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_6e5p0")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_wtsm0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xev22")
+
+[node name="CameraPivot" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.65, 0)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+spring_length = 4.0
+margin = 0.25
+
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+current = true
+fov = 70.0
