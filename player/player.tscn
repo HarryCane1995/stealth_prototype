@@ -1,6 +1,11 @@
-[gd_scene format=3 uid="uid://b3d1m6f2g0q8x"]
+[gd_scene load_steps=10 format=3 uid="uid://b3d1m6f2g0q8x"]
 
 [ext_resource type="Script" path="res://player/player.gd" id="1_6e5p0"]
+[ext_resource type="Script" path="res://player/components/player_input.gd" id="2_0e3eo"]
+[ext_resource type="Script" path="res://player/components/player_movement.gd" id="3_xsx04"]
+[ext_resource type="Script" path="res://player/components/player_jump.gd" id="4_vyslf"]
+[ext_resource type="Script" path="res://player/components/player_mouse_look.gd" id="5_11fbs"]
+[ext_resource type="Script" path="res://player/components/player_crouch.gd" id="6_wnwt0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtsm0"]
 radius = 0.35
@@ -33,3 +38,24 @@ margin = 0.25
 [node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
 current = true
 fov = 70.0
+
+[node name="Components" type="Node" parent="."]
+
+[node name="PlayerInput" type="Node" parent="Components"]
+script = ExtResource("2_0e3eo")
+
+[node name="PlayerMovement" type="Node" parent="Components"]
+script = ExtResource("3_xsx04")
+
+[node name="PlayerJump" type="Node" parent="Components"]
+script = ExtResource("4_vyslf")
+
+[node name="PlayerMouseLook" type="Node" parent="Components" node_paths=PackedStringArray("camera_pivot")]
+script = ExtResource("5_11fbs")
+camera_pivot = NodePath("../../CameraPivot")
+
+[node name="PlayerCrouch" type="Node" parent="Components" node_paths=PackedStringArray("collision_shape", "visual_mesh", "camera_pivot")]
+script = ExtResource("6_wnwt0")
+collision_shape = NodePath("../../CollisionShape3D")
+visual_mesh = NodePath("../../MeshInstance3D")
+camera_pivot = NodePath("../../CameraPivot")
