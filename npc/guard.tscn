@@ -1,8 +1,8 @@
 [gd_scene load_steps=7 format=3 uid="uid://c1mdmecja7mjo"]
 
-[ext_resource type="Script" path="res://npc/guard.gd" id="1_7nxq1"]
-[ext_resource type="Script" path="res://npc/components/vision_debug.gd" id="2_8dpyo"]
-[ext_resource type="Script" path="res://npc/components/guard_vision.gd" id="2_b2n56"]
+[ext_resource type="Script" path="res://scripts/npc/guard.gd" id="1_7nxq1"]
+[ext_resource type="Script" path="res://scripts/npc/components/vision_debug.gd" id="2_8dpyo"]
+[ext_resource type="Script" path="res://scripts/npc/components/guard_vision.gd" id="2_b2n56"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3xdoi"]
 radius = 0.35

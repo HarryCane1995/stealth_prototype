@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+signal player_detected
+signal chase_started
+signal chase_ended
+
 @export var player_path: NodePath = NodePath("")
 @export var wander_speed: float = 2.0
 @export var chase_speed: float = 4.5
@@ -10,6 +14,8 @@ extends CharacterBody3D
 @export var wander_area_half_size: Vector2 = Vector2(20.0, 20.0)
 @export var new_wander_target_distance: float = 0.5
 @export var collision_turn_distance: float = 4.0
+@export var forget_player_after_seconds: float = 5.0
+@export var detection_pause_seconds: float = 1.0
 
 @onready var guard_vision: GuardVision = $GuardVision
 @onready var vision_debug: Node = get_node_or_null("VisionDebug")
@@ -20,6 +26,9 @@ var wander_target: Vector3 = Vector3.ZERO
 var is_chasing: bool = false
 var wait_timer: float = 0.0
 var collision_turn_cooldown: float = 0.0
+var time_since_player_seen: float = 0.0
+var detection_pause_timer: float = 0.0
+var has_started_chase: bool = false
 
 
 func _ready() -> void:
@@ -40,11 +49,18 @@ func _physics_process(delta: float) -> void:
 	if collision_turn_cooldown > 0.0:
 		collision_turn_cooldown -= delta
 
-	if guard_vision.can_see_player(self, player, vision_range, vision_angle_degrees):
-		is_chasing = true
+	var can_see_player: bool = guard_vision.can_see_player(self, player, vision_range, vision_angle_degrees)
+	if can_see_player:
+		if not is_chasing:
+			_start_detection_pause()
+		time_since_player_seen = 0.0
+	elif is_chasing:
+		time_since_player_seen += delta
+		if time_since_player_seen >= forget_player_after_seconds:
+			_forget_player()
 
 	if is_chasing:
-		_chase_player()
+		_update_chase(delta)
 	else:
 		_wander(delta)
 
@@ -77,6 +93,38 @@ func _wander(delta: float) -> void:
 
 func _chase_player() -> void:
 	_move_toward(player.global_position, chase_speed)
+
+
+func _start_detection_pause() -> void:
+	is_chasing = true
+	has_started_chase = false
+	detection_pause_timer = detection_pause_seconds
+	velocity.x = 0.0
+	velocity.z = 0.0
+	player_detected.emit()
+
+
+func _update_chase(delta: float) -> void:
+	if detection_pause_timer > 0.0:
+		detection_pause_timer -= delta
+		velocity.x = 0.0
+		velocity.z = 0.0
+		return
+
+	if not has_started_chase:
+		has_started_chase = true
+		chase_started.emit()
+
+	_chase_player()
+
+
+func _forget_player() -> void:
+	is_chasing = false
+	has_started_chase = false
+	detection_pause_timer = 0.0
+	time_since_player_seen = 0.0
+	_pick_new_wander_target()
+	chase_ended.emit()
 
 
 func _move_toward(target: Vector3, speed: float) -> void:

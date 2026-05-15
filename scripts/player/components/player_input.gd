@@ -10,7 +10,7 @@ func is_sprinting() -> bool:
 
 
 func wants_jump() -> bool:
-	return Input.is_action_pressed("jump")
+	return Input.is_action_just_pressed("jump")
 
 
 func is_crouching() -> bool:

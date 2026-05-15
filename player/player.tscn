@@ -1,11 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://b3d1m6f2g0q8x"]
+[gd_scene format=3 uid="uid://dm1iaec6eb8v3"]
 
-[ext_resource type="Script" path="res://player/player.gd" id="1_6e5p0"]
-[ext_resource type="Script" path="res://player/components/player_input.gd" id="2_0e3eo"]
-[ext_resource type="Script" path="res://player/components/player_movement.gd" id="3_xsx04"]
-[ext_resource type="Script" path="res://player/components/player_jump.gd" id="4_vyslf"]
-[ext_resource type="Script" path="res://player/components/player_mouse_look.gd" id="5_11fbs"]
-[ext_resource type="Script" path="res://player/components/player_crouch.gd" id="6_wnwt0"]
+[ext_resource type="Script" uid="uid://dqodwqy7n61qw" path="res://scripts/player/player.gd" id="1_6e5p0"]
+[ext_resource type="Script" uid="uid://biv20jp5gx5fn" path="res://scripts/player/components/player_input.gd" id="2_0e3eo"]
+[ext_resource type="Script" uid="uid://bfxpjabqmaa0b" path="res://scripts/player/components/player_movement.gd" id="3_xsx04"]
+[ext_resource type="Script" uid="uid://cilldtregpixq" path="res://scripts/player/components/player_jump.gd" id="4_vyslf"]
+[ext_resource type="Script" uid="uid://chqswiaft8vc2" path="res://scripts/player/components/player_mouse_look.gd" id="5_11fbs"]
+[ext_resource type="Script" uid="uid://bcg2gwfn3gqvc" path="res://scripts/player/components/player_crouch.gd" id="6_wnwt0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtsm0"]
 radius = 0.35
@@ -19,42 +19,46 @@ material = SubResource("StandardMaterial3D_bx7td")
 radius = 0.35
 height = 1.8
 
-[node name="Player" type="CharacterBody3D" groups=["player"]]
+[node name="Player" type="CharacterBody3D" unique_id=287714155 groups=["player"]]
 script = ExtResource("1_6e5p0")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1896345513]
 shape = SubResource("CapsuleShape3D_wtsm0")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1508276415]
 mesh = SubResource("CapsuleMesh_xev22")
 
-[node name="CameraPivot" type="Node3D" parent="."]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D" unique_id=59216675]
+transform = Transform3D(1.1265941, 0, 0, 0, 0.13180986, 0, 0, 0, 1.075254, 0, 0.42717302, 0)
+mesh = SubResource("CapsuleMesh_xev22")
+
+[node name="CameraPivot" type="Node3D" parent="." unique_id=1760962304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.65, 0)
 
-[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot"]
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraPivot" unique_id=1678872317]
 spring_length = 4.0
 margin = 0.25
 
-[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D"]
+[node name="Camera3D" type="Camera3D" parent="CameraPivot/SpringArm3D" unique_id=1245645555]
 current = true
 fov = 70.0
 
-[node name="Components" type="Node" parent="."]
+[node name="Components" type="Node" parent="." unique_id=624236269]
 
-[node name="PlayerInput" type="Node" parent="Components"]
+[node name="PlayerInput" type="Node" parent="Components" unique_id=1821487296]
 script = ExtResource("2_0e3eo")
 
-[node name="PlayerMovement" type="Node" parent="Components"]
+[node name="PlayerMovement" type="Node" parent="Components" unique_id=201790518]
 script = ExtResource("3_xsx04")
 
-[node name="PlayerJump" type="Node" parent="Components"]
+[node name="PlayerJump" type="Node" parent="Components" unique_id=1731100849]
 script = ExtResource("4_vyslf")
 
-[node name="PlayerMouseLook" type="Node" parent="Components" node_paths=PackedStringArray("camera_pivot")]
+[node name="PlayerMouseLook" type="Node" parent="Components" unique_id=62586671 node_paths=PackedStringArray("camera_pivot")]
 script = ExtResource("5_11fbs")
 camera_pivot = NodePath("../../CameraPivot")
 
-[node name="PlayerCrouch" type="Node" parent="Components" node_paths=PackedStringArray("collision_shape", "visual_mesh", "camera_pivot")]
+[node name="PlayerCrouch" type="Node" parent="Components" unique_id=1555133726 node_paths=PackedStringArray("collision_shape", "visual_mesh", "camera_pivot")]
 script = ExtResource("6_wnwt0")
 collision_shape = NodePath("../../CollisionShape3D")
 visual_mesh = NodePath("../../MeshInstance3D")
