@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://c1mdmecja7mjo"]
+
+[ext_resource type="Script" path="res://npc/guard.gd" id="1_7nxq1"]
+[ext_resource type="Script" path="res://npc/components/vision_debug.gd" id="2_8dpyo"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3xdoi"]
+radius = 0.35
+height = 1.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k4l5c"]
+albedo_color = Color(0.9, 0.25, 0.2, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tcxhq"]
+material = SubResource("StandardMaterial3D_k4l5c")
+radius = 0.35
+height = 1.8
+
+[node name="Guard" type="CharacterBody3D"]
+script = ExtResource("1_7nxq1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3xdoi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_tcxhq")
+
+[node name="VisionDebug" type="MeshInstance3D" parent="."]
+cast_shadow = 0
+script = ExtResource("2_8dpyo")

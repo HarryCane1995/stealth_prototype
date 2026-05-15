@@ -19,7 +19,7 @@ material = SubResource("StandardMaterial3D_bx7td")
 radius = 0.35
 height = 1.8
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["player"]]
 script = ExtResource("1_6e5p0")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
