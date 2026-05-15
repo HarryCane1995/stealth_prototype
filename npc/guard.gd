@@ -11,6 +11,7 @@ extends CharacterBody3D
 @export var new_wander_target_distance: float = 0.5
 @export var collision_turn_distance: float = 4.0
 
+@onready var guard_vision: GuardVision = $GuardVision
 @onready var vision_debug: Node = get_node_or_null("VisionDebug")
 
 var player: Node3D = null
@@ -39,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	if collision_turn_cooldown > 0.0:
 		collision_turn_cooldown -= delta
 
-	if _can_see_player():
+	if guard_vision.can_see_player(self, player, vision_range, vision_angle_degrees):
 		is_chasing = true
 
 	if is_chasing:
@@ -81,13 +82,16 @@ func _chase_player() -> void:
 func _move_toward(target: Vector3, speed: float) -> void:
 	var direction: Vector3 = target - global_position
 	direction.y = 0.0
+	if direction.length() <= 0.01:
+		velocity.x = 0.0
+		velocity.z = 0.0
+		return
+
 	direction = direction.normalized()
 
 	velocity.x = direction.x * speed
 	velocity.z = direction.z * speed
-
-	if direction.length() > 0.01:
-		look_at(global_position + direction, Vector3.UP)
+	look_at(global_position + direction, Vector3.UP)
 
 
 func _pick_new_wander_target() -> void:
@@ -123,39 +127,3 @@ func _has_wall_collision() -> bool:
 			return true
 
 	return false
-
-
-func _can_see_player() -> bool:
-	var to_player: Vector3 = player.global_position - global_position
-	var flat_to_player: Vector3 = Vector3(to_player.x, 0.0, to_player.z)
-	var distance_to_player: float = flat_to_player.length()
-
-	if distance_to_player > vision_range:
-		return false
-	if distance_to_player <= 0.01:
-		return true
-
-	var forward: Vector3 = -global_transform.basis.z
-	forward.y = 0.0
-	forward = forward.normalized()
-
-	var angle_to_player: float = forward.angle_to(flat_to_player.normalized())
-	var half_vision_angle: float = deg_to_rad(vision_angle_degrees * 0.5)
-	if angle_to_player > half_vision_angle:
-		return false
-
-	return _has_line_of_sight_to_player()
-
-
-func _has_line_of_sight_to_player() -> bool:
-	var space_state: PhysicsDirectSpaceState3D = get_world_3d().direct_space_state
-	var from: Vector3 = global_position + Vector3.UP * 1.0
-	var to: Vector3 = player.global_position + Vector3.UP * 1.0
-	var query: PhysicsRayQueryParameters3D = PhysicsRayQueryParameters3D.create(from, to)
-	query.exclude = [self]
-
-	var hit: Dictionary = space_state.intersect_ray(query)
-	if hit.is_empty():
-		return true
-
-	return hit.get("collider") == player
