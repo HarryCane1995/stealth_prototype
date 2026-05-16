@@ -16,6 +16,7 @@ signal chase_ended
 @export var collision_turn_distance: float = 4.0
 @export var forget_player_after_seconds: float = 5.0
 @export var detection_pause_seconds: float = 1.0
+@export var health: int = 1
 
 @onready var guard_vision: GuardVision = $GuardVision
 @onready var vision_debug: Node = get_node_or_null("VisionDebug")
@@ -29,6 +30,7 @@ var collision_turn_cooldown: float = 0.0
 var time_since_player_seen: float = 0.0
 var detection_pause_timer: float = 0.0
 var has_started_chase: bool = false
+var is_knocked_out: bool = false
 
 
 func _ready() -> void:
@@ -43,6 +45,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if is_knocked_out:
+		return
 	if player == null:
 		return
 
@@ -75,6 +79,25 @@ func _physics_process(delta: float) -> void:
 
 	if is_chasing and global_position.distance_to(player.global_position) <= catch_distance:
 		get_tree().reload_current_scene()
+
+
+func take_damage(amount: int) -> void:
+	if is_knocked_out:
+		return
+
+	health -= amount
+	print("Guard took %s damage. Health: %s" % [amount, health])
+	if health <= 0:
+		_knock_out()
+
+
+func _knock_out() -> void:
+	is_knocked_out = true
+	velocity = Vector3.ZERO
+	set_physics_process(false)
+	hide()
+	$CollisionShape3D.set_deferred("disabled", true)
+	print("Guard knocked out")
 
 
 func _wander(delta: float) -> void:

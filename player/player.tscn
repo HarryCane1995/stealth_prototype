@@ -6,7 +6,8 @@
 [ext_resource type="Script" uid="uid://cilldtregpixq" path="res://scripts/player/components/player_jump.gd" id="4_vyslf"]
 [ext_resource type="Script" uid="uid://chqswiaft8vc2" path="res://scripts/player/components/player_mouse_look.gd" id="5_11fbs"]
 [ext_resource type="Script" uid="uid://bcg2gwfn3gqvc" path="res://scripts/player/components/player_crouch.gd" id="6_wnwt0"]
-[ext_resource type="Script" path="res://scripts/player/components/player_ledge_climb.gd" id="7_8g3xw"]
+[ext_resource type="Script" uid="uid://bh4rjx60xmhu8" path="res://scripts/player/components/player_ledge_climb.gd" id="7_8g3xw"]
+[ext_resource type="Script" uid="uid://bkopux22bgwyp" path="res://scripts/player/components/player_weapon.gd" id="8_bkclp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtsm0"]
 radius = 0.35
@@ -31,6 +32,9 @@ shape = SubResource("CapsuleShape3D_wtsm0")
 [node name="PlaceholderCapsule" type="MeshInstance3D" parent="PlayerVisual" unique_id=1508276415]
 mesh = SubResource("CapsuleMesh_xev22")
 
+[node name="WeaponOrigin" type="Node3D" parent="PlayerVisual" unique_id=680854578]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.24663699, -0.55)
+
 [node name="CameraPivot" type="Node3D" parent="." unique_id=1760962304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0488209, 0.65, 0)
 
@@ -42,15 +46,31 @@ margin = 0.25
 current = true
 fov = 70.0
 
-[node name="InteractionPrompt" type="CanvasLayer" parent="."]
+[node name="InteractionPrompt" type="CanvasLayer" parent="." unique_id=2089567116]
 visible = false
 
-[node name="PromptLabel" type="Label" parent="InteractionPrompt"]
+[node name="PromptLabel" type="Label" parent="InteractionPrompt" unique_id=1711518738]
 offset_left = 32.0
 offset_top = 32.0
 offset_right = 260.0
 offset_bottom = 58.0
 text = "Повиснуть - F"
+
+[node name="Crosshair" type="CanvasLayer" parent="." unique_id=1216947926]
+
+[node name="CrosshairLabel" type="Label" parent="Crosshair" unique_id=1758720868]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -5.0
+offset_top = -12.0
+offset_right = 5.0
+offset_bottom = 12.0
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Components" type="Node" parent="." unique_id=624236269]
 
@@ -72,6 +92,11 @@ script = ExtResource("6_wnwt0")
 collision_shape = NodePath("../../CollisionShape3D")
 camera_pivot = NodePath("../../CameraPivot")
 
-[node name="PlayerLedgeClimb" type="Node" parent="Components" node_paths=PackedStringArray("collision_shape")]
+[node name="PlayerLedgeClimb" type="Node" parent="Components" unique_id=2125716581 node_paths=PackedStringArray("collision_shape")]
 script = ExtResource("7_8g3xw")
 collision_shape = NodePath("../../CollisionShape3D")
+
+[node name="PlayerWeapon" type="Node" parent="Components" unique_id=1872157132 node_paths=PackedStringArray("camera", "weapon_origin")]
+script = ExtResource("8_bkclp")
+camera = NodePath("../../CameraPivot/SpringArm3D/Camera3D")
+weapon_origin = NodePath("../../PlayerVisual/WeaponOrigin")
