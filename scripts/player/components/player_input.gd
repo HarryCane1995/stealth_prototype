@@ -21,5 +21,13 @@ func wants_crouch_drop() -> bool:
 	return Input.is_action_just_pressed("crouch")
 
 
-func is_crouching() -> bool:
+func wants_crouch_pressed() -> bool:
+	return Input.is_action_just_pressed("crouch")
+
+
+func is_crouch_held() -> bool:
 	return Input.is_action_pressed("crouch")
+
+
+func is_crouching() -> bool:
+	return is_crouch_held()

@@ -32,6 +32,7 @@ func _physics_process(delta: float) -> void:
 	var wants_jump: bool = player_input.wants_jump()
 	var wants_interact: bool = player_input.wants_interact()
 	var wants_crouch_drop: bool = player_input.wants_crouch_drop()
+	var wants_crouch_pressed: bool = player_input.wants_crouch_pressed()
 	var wants_drop: bool = wants_jump or move_direction.y > 0.5
 
 	if player_ledge_climb.is_hanging():
@@ -46,11 +47,14 @@ func _physics_process(delta: float) -> void:
 		player_ledge_climb.update_active_movement(self, delta, move_direction, wants_drop)
 		return
 
+	var was_climbing: bool = player_ledge_climb.is_climbing()
 	if player_ledge_climb.update_active_movement(self, delta, move_direction, false):
+		if was_climbing and not player_ledge_climb.is_climbing():
+			player_crouch.reset_after_ledge_climb(self)
 		_set_ledge_climb_prompt("", false)
 		return
 
-	player_crouch.update_crouch(player_input.is_crouching())
+	player_crouch.update_stance(self, delta, wants_crouch_pressed, player_input.is_crouch_held())
 	var climbable_ledge: Dictionary = player_ledge_climb.get_climbable_ledge(self, move_direction)
 	var can_auto_climb: bool = move_direction.length() > 0.1 and player_ledge_climb.is_auto_climb_ledge(climbable_ledge)
 	var can_hang_climb: bool = player_ledge_climb.is_hang_climb_ledge(climbable_ledge)
@@ -78,7 +82,12 @@ func _physics_process(delta: float) -> void:
 		if player_ledge_climb.start_climb(self, climbable_ledge):
 			return
 
-	player_movement.apply_horizontal_velocity(self, move_direction, player_input.is_sprinting())
+	if wants_jump and not player_crouch.can_sprint():
+		wants_jump = player_crouch.try_stand_for_jump(self)
+
+	var stance_speed_multiplier: float = player_crouch.get_speed_multiplier()
+	var can_sprint: bool = player_input.is_sprinting() and player_crouch.can_sprint()
+	player_movement.apply_horizontal_velocity(self, move_direction, can_sprint, stance_speed_multiplier)
 	player_jump.apply_vertical_velocity(self, delta, wants_jump)
 	move_and_slide()
 

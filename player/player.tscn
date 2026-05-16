@@ -87,10 +87,11 @@ script = ExtResource("4_vyslf")
 script = ExtResource("5_11fbs")
 camera_pivot = NodePath("../../CameraPivot")
 
-[node name="PlayerCrouch" type="Node" parent="Components" unique_id=1555133726 node_paths=PackedStringArray("collision_shape", "camera_pivot")]
+[node name="PlayerCrouch" type="Node" parent="Components" unique_id=1555133726 node_paths=PackedStringArray("collision_shape", "camera_pivot", "visual_capsule")]
 script = ExtResource("6_wnwt0")
 collision_shape = NodePath("../../CollisionShape3D")
 camera_pivot = NodePath("../../CameraPivot")
+visual_capsule = NodePath("../../PlayerVisual/PlaceholderCapsule")
 
 [node name="PlayerLedgeClimb" type="Node" parent="Components" unique_id=2125716581 node_paths=PackedStringArray("collision_shape")]
 script = ExtResource("7_8g3xw")
@@ -98,5 +99,6 @@ collision_shape = NodePath("../../CollisionShape3D")
 
 [node name="PlayerWeapon" type="Node" parent="Components" unique_id=1872157132 node_paths=PackedStringArray("camera", "weapon_origin")]
 script = ExtResource("8_bkclp")
+debug_draw_shots = true
 camera = NodePath("../../CameraPivot/SpringArm3D/Camera3D")
 weapon_origin = NodePath("../../PlayerVisual/WeaponOrigin")
