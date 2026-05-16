@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bahrjp3hpd4vp"]
 
 [ext_resource type="Script" uid="uid://cq6wib7gy3uj7" path="res://scripts/main.gd" id="1_f3dik"]
-[ext_resource type="PackedScene" path="res://player/player.tscn" id="1_lyxqh"]
+[ext_resource type="PackedScene" uid="uid://dm1iaec6eb8v3" path="res://player/player.tscn" id="1_lyxqh"]
 [ext_resource type="PackedScene" path="res://npc/guard.tscn" id="2_mrr7x"]
 [ext_resource type="PackedScene" uid="uid://dcs85nidb7x0k" path="res://prefabs/border_long.tscn" id="3_1gbox"]
 [ext_resource type="PackedScene" uid="uid://b5j0pgk4tt147" path="res://prefabs/border_side.tscn" id="4_wmwkd"]
@@ -12,6 +12,9 @@
 [ext_resource type="AudioStream" uid="uid://dwfjrvleseyej" path="res://sounds/music/StealthMusic.mp3" id="9_e50gp"]
 [ext_resource type="AudioStream" uid="uid://cq2cslv88e1tk" path="res://sounds/music/AlarmMusic.mp3" id="10_1l11p"]
 [ext_resource type="AudioStream" uid="uid://cxh2tsi242jeu" path="res://sounds/sounds/AlarmSound.mp3" id="11_r8o7a"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_auto_block.tscn" id="12_x6ida"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_hang_block.tscn" id="13_3frpg"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_direct_block.tscn" id="14_nw3wt"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7g62"]
 albedo_color = Color(0.18, 0.22, 0.2, 1)
@@ -62,17 +65,23 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1, 0)
 [node name="BlockA" parent="Blockout" unique_id=561756697 instance=ExtResource("5_qbqft")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0.75, -2)
 
+[node name="BlockA" parent="Blockout/BlockA" unique_id=1968847105 instance=ExtResource("5_qbqft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, -0.25, -12)
+
+[node name="BlockA" parent="Blockout/BlockA/BlockA" unique_id=1806522395 instance=ExtResource("5_qbqft")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3981743, -1)
+
 [node name="BlockB" parent="Blockout" unique_id=1640691564 instance=ExtResource("6_ye6si")]
 transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, 4, 1.5, -3)
 
 [node name="BlockC" parent="Blockout" unique_id=700643489 instance=ExtResource("5_qbqft")]
-transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.75, -7)
+transform = Transform3D(0, 0, 1.0000004, 0, 1, 0, -1.0000004, 0, 0, 0, 0.75, -7)
 
 [node name="WallA" parent="Blockout" unique_id=1741129068 instance=ExtResource("7_jvpvv")]
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, -15, 1.1, -14)
 
 [node name="WallB" parent="Blockout" unique_id=2118152863 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, 0.5, -9, 1.1, 11)
+transform = Transform3D(0.50000006, 0, 0.8660251, 0, 1, 0, -0.8660251, 0, 0.50000006, -9, 1.1, 11)
 
 [node name="WallC" parent="Blockout" unique_id=2073376680 instance=ExtResource("7_jvpvv")]
 transform = Transform3D(0.173648, 0, -0.984808, 0, 1, 0, 0.984808, 0, 0.173648, 11, 1.1, -13)
@@ -87,16 +96,40 @@ transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 
 transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -2, 1.1, 15)
 
 [node name="WallG" parent="Blockout" unique_id=248536616 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(0.34202, 0, -0.939693, 0, 1, 0, 0.939693, 0, 0.34202, 4, 1.1, -15)
+transform = Transform3D(1.1313342e-08, -0.9659258, 0.2588191, -4.222197e-08, -0.25881904, -0.96592605, 1.0000002, 0, -4.37114e-08, -2.0477884, 5.240394, -20.969095)
 
 [node name="WallH" parent="Blockout" unique_id=1363575307 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(0.0871557, 0, 0.996195, 0, 1, 0, -0.996195, 0, 0.0871557, 19, 1.1, -3)
+transform = Transform3D(2.0690932, 0, 0, 0, 1, 0, 0, 0, 15.579002, 31.282347, -0.3190775, -2.9167833)
 
 [node name="WallI" parent="Blockout" unique_id=798494039 instance=ExtResource("8_xxkrt")]
 transform = Transform3D(0.996195, 0, 0.0871557, 0, 1, 0, -0.0871557, 0, 0.996195, 8, 1.1, 17)
 
 [node name="WallJ" parent="Blockout" unique_id=2080110879 instance=ExtResource("8_xxkrt")]
 transform = Transform3D(0.573576, 0, -0.819152, 0, 1, 0, 0.819152, 0, 0.573576, -14, 1.1, -6)
+
+[node name="BlockA2" parent="Blockout" unique_id=1421940810 instance=ExtResource("5_qbqft")]
+transform = Transform3D(4.054943, 0, 0, 0, 1, 0, 0, 0, 2.9839058, -3, 3.2963486, -19.784557)
+
+[node name="BlockA3" parent="Blockout" unique_id=1520539848 instance=ExtResource("5_qbqft")]
+transform = Transform3D(-4.371139e-08, 0, 3.3507695, 0, 2.633133, 0, -1, 0, -1.4646679e-07, 9.959882, 2.07381, -4.990782)
+
+[node name="AutoClimbA" parent="Blockout" unique_id=2048839106 instance=ExtResource("12_x6ida")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.3, 4)
+
+[node name="AutoClimbB" parent="Blockout" unique_id=2054258950 instance=ExtResource("12_x6ida")]
+transform = Transform3D(1.6, 0, 0, 0, 2.295694, 0, 0, 0, 1, 9.537121, 0.0042553544, 0.27556682)
+
+[node name="HangClimbA" parent="Blockout" unique_id=513934980 instance=ExtResource("13_3frpg")]
+transform = Transform3D(3.3616178, 0, 0, 0, 0.58568347, 0, 0, 0, 1.7338251, 12.310308, 3.4604702, -3.6976833)
+
+[node name="HangClimbB" parent="Blockout" unique_id=1816639402 instance=ExtResource("13_3frpg")]
+transform = Transform3D(0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -13, 1.1, 8)
+
+[node name="DirectClimbA" parent="Blockout" unique_id=466968272 instance=ExtResource("14_nw3wt")]
+transform = Transform3D(1, 0, 0, 0, 2.0636473, 0, 0, 0, 2.210075, 9.590715, -0.28838873, -1.5907801)
+
+[node name="DirectClimbB" parent="Blockout" unique_id=138942862 instance=ExtResource("14_nw3wt")]
+transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -13, 1.1, 12)
 
 [node name="Guards" type="Node3D" parent="." unique_id=1483041833]
 

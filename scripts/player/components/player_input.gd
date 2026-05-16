@@ -13,5 +13,13 @@ func wants_jump() -> bool:
 	return Input.is_action_just_pressed("jump")
 
 
+func wants_interact() -> bool:
+	return Input.is_action_just_pressed("interact")
+
+
+func wants_crouch_drop() -> bool:
+	return Input.is_action_just_pressed("crouch")
+
+
 func is_crouching() -> bool:
 	return Input.is_action_pressed("crouch")
