@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blockout"]
+albedo_color = Color(0.45, 0.47, 0.48, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_blockout"]
+material = SubResource("StandardMaterial3D_blockout")
+size = Vector3(4.0, 1.0, 1.0)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_blockout"]
+size = Vector3(4.0, 1.0, 1.0)
+
+[node name="BlockoutWall_4x1x1" type="StaticBody3D"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_blockout")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_blockout")

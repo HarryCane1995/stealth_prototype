@@ -1,164 +1,124 @@
 [gd_scene format=3 uid="uid://bahrjp3hpd4vp"]
 
-[ext_resource type="Script" uid="uid://cq6wib7gy3uj7" path="res://scripts/main.gd" id="1_f3dik"]
-[ext_resource type="PackedScene" uid="uid://dm1iaec6eb8v3" path="res://player/player.tscn" id="1_lyxqh"]
-[ext_resource type="PackedScene" path="res://npc/guard.tscn" id="2_mrr7x"]
-[ext_resource type="PackedScene" uid="uid://dcs85nidb7x0k" path="res://prefabs/border_long.tscn" id="3_1gbox"]
-[ext_resource type="PackedScene" uid="uid://b5j0pgk4tt147" path="res://prefabs/border_side.tscn" id="4_wmwkd"]
-[ext_resource type="PackedScene" uid="uid://c1jpol4ldx3yf" path="res://prefabs/block_small.tscn" id="5_qbqft"]
-[ext_resource type="PackedScene" uid="uid://cb7w1cn7gbg2n" path="res://prefabs/block_tall.tscn" id="6_ye6si"]
-[ext_resource type="PackedScene" uid="uid://c43ds8akj5i5e" path="res://prefabs/wall_long.tscn" id="7_jvpvv"]
-[ext_resource type="PackedScene" uid="uid://cypt4wmw4oomn" path="res://prefabs/wall_short.tscn" id="8_xxkrt"]
-[ext_resource type="AudioStream" uid="uid://dwfjrvleseyej" path="res://sounds/music/StealthMusic.mp3" id="9_e50gp"]
-[ext_resource type="AudioStream" uid="uid://cq2cslv88e1tk" path="res://sounds/music/AlarmMusic.mp3" id="10_1l11p"]
-[ext_resource type="AudioStream" uid="uid://cxh2tsi242jeu" path="res://sounds/sounds/AlarmSound.mp3" id="11_r8o7a"]
-[ext_resource type="PackedScene" path="res://prefabs/climb_auto_block.tscn" id="12_x6ida"]
-[ext_resource type="PackedScene" path="res://prefabs/climb_hang_block.tscn" id="13_3frpg"]
-[ext_resource type="PackedScene" path="res://prefabs/climb_direct_block.tscn" id="14_nw3wt"]
+[ext_resource type="Script" uid="uid://cq6wib7gy3uj7" path="res://scripts/main.gd" id="1_main"]
+[ext_resource type="PackedScene" uid="uid://dm1iaec6eb8v3" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" uid="uid://c1mdmecja7mjo" path="res://npc/guard.tscn" id="3_guard"]
+[ext_resource type="PackedScene" uid="uid://dcs85nidb7x0k" path="res://prefabs/border_long.tscn" id="4_border_long"]
+[ext_resource type="PackedScene" uid="uid://b5j0pgk4tt147" path="res://prefabs/border_side.tscn" id="5_border_side"]
+[ext_resource type="AudioStream" uid="uid://dwfjrvleseyej" path="res://sounds/music/StealthMusic.mp3" id="6_stealth_music"]
+[ext_resource type="AudioStream" uid="uid://cq2cslv88e1tk" path="res://sounds/music/AlarmMusic.mp3" id="7_alarm_music"]
+[ext_resource type="AudioStream" uid="uid://cxh2tsi242jeu" path="res://sounds/sounds/AlarmSound.mp3" id="8_alarm_sound"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_auto_block.tscn" id="9_climb_auto"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_hang_block.tscn" id="10_climb_hang"]
+[ext_resource type="PackedScene" path="res://prefabs/climb_direct_block.tscn" id="11_climb_direct"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_p7g62"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_floor"]
 albedo_color = Color(0.18, 0.22, 0.2, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_e3r2y"]
-material = SubResource("StandardMaterial3D_p7g62")
+[sub_resource type="BoxMesh" id="BoxMesh_floor"]
+material = SubResource("StandardMaterial3D_floor")
 size = Vector3(48, 0.2, 48)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_j8tvj"]
-size = Vector3(48, 0.2, 48)
+[sub_resource type="BoxShape3D" id="BoxShape3D_floor"]
+size = Vector3(96, 0.2, 48)
 
-[node name="Main" type="Node3D" unique_id=1510492892]
-script = ExtResource("1_f3dik")
+[node name="Main" type="Node3D" unique_id=2141533041]
+script = ExtResource("1_main")
 
-[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1199993648]
-transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 0, 6, 0)
-shadow_enabled = true
+[node name="Environment" type="Node3D" parent="." unique_id=100278583]
 
-[node name="Player" parent="." unique_id=2097462033 instance=ExtResource("1_lyxqh")]
+[node name="Floor" type="StaticBody3D" parent="Environment" unique_id=335445058]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Floor" unique_id=324342706]
+transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_floor")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Floor" unique_id=1426957476]
+shape = SubResource("BoxShape3D_floor")
+
+[node name="Borders" type="Node3D" parent="Environment" unique_id=559632903]
+
+[node name="NorthBorder" parent="Environment/Borders" unique_id=1756141577 instance=ExtResource("4_border_long")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1, -24)
+
+[node name="SouthBorder" parent="Environment/Borders" unique_id=2001774294 instance=ExtResource("4_border_long")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1, 24)
+
+[node name="WestBorder" parent="Environment/Borders" unique_id=587185634 instance=ExtResource("5_border_side")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -48, 1, 0)
+
+[node name="EastBorder" parent="Environment/Borders" unique_id=1096182698 instance=ExtResource("5_border_side")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 1, 0)
+
+[node name="BorderLong" parent="Environment/Borders" unique_id=1034503346 instance=ExtResource("4_border_long")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1, -24)
+
+[node name="BorderLong2" parent="Environment/Borders" unique_id=442716110 instance=ExtResource("4_border_long")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1, 24)
+
+[node name="Blockout" type="Node3D" parent="Environment" unique_id=307607017]
+
+[node name="InteriorWalls" type="Node3D" parent="Environment/Blockout" unique_id=862519663]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32.346725, 0, -9)
+
+[node name="Cover" type="Node3D" parent="Environment/Blockout" unique_id=540041987]
+
+[node name="Platforms" type="Node3D" parent="Environment/Blockout" unique_id=1635788747]
+
+[node name="Climbables" type="Node3D" parent="Environment/Blockout" unique_id=1916581860]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 34)
+
+[node name="Climbable_01" parent="Environment/Blockout/Climbables" unique_id=1338061689 instance=ExtResource("9_climb_auto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.3, -3)
+
+[node name="Climbable_02" parent="Environment/Blockout/Climbables" unique_id=1388646309 instance=ExtResource("10_climb_hang")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.1, -5)
+
+[node name="Climbable_03" parent="Environment/Blockout/Climbables" unique_id=1532868878 instance=ExtResource("11_climb_direct")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1.1, -1)
+
+[node name="Player" parent="." unique_id=888047494 instance=ExtResource("2_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
 
-[node name="Floor" type="StaticBody3D" parent="." unique_id=28632971]
+[node name="Guards" type="Node3D" parent="." unique_id=565006446]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=928281801]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.109745026, -0.1, 0)
-mesh = SubResource("BoxMesh_e3r2y")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=1024450890]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
-shape = SubResource("BoxShape3D_j8tvj")
-
-[node name="Borders" type="Node3D" parent="." unique_id=2074136617]
-
-[node name="NorthBorder" parent="Borders" unique_id=1679489813 instance=ExtResource("3_1gbox")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -24)
-
-[node name="SouthBorder" parent="Borders" unique_id=350671943 instance=ExtResource("3_1gbox")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 24)
-
-[node name="WestBorder" parent="Borders" unique_id=1559338982 instance=ExtResource("4_wmwkd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 1, 0)
-
-[node name="EastBorder" parent="Borders" unique_id=714850402 instance=ExtResource("4_wmwkd")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1, 0)
-
-[node name="Blockout" type="Node3D" parent="." unique_id=1725331959]
-
-[node name="BlockA" parent="Blockout" unique_id=561756697 instance=ExtResource("5_qbqft")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.09581, 0.75, -5.261125)
-
-[node name="BlockB" parent="Blockout" unique_id=1640691564 instance=ExtResource("6_ye6si")]
-transform = Transform3D(0.866025, 0, -0.5, 0, 1, 0, 0.5, 0, 0.866025, -4.5975094, 1.5, -7.5655766)
-
-[node name="BlockC" parent="Blockout" unique_id=700643489 instance=ExtResource("5_qbqft")]
-transform = Transform3D(0, 0, 1.0000004, 0, 1, 0, -1.0000004, 0, 0, -11.1471195, 0.75, -9.549606)
-
-[node name="WallA" parent="Blockout" unique_id=1741129068 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(1.0000001, 1.1313338e-08, 4.4703484e-08, -1.13133405e-08, 1, 1.489428e-09, -4.4703484e-08, -1.4894298e-09, 1.0000001, -15, 1.1, -14)
-
-[node name="WallB" parent="Blockout" unique_id=2118152863 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(2.0861626e-07, 2.1855694e-08, 0.99999976, -5.8562177e-09, 1, -2.1855689e-08, -0.99999976, -5.8562164e-09, 2.0861626e-07, -7.134285, 1.1, 15.609398)
-
-[node name="WallC" parent="Blockout" unique_id=2073376680 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(0.17364801, 0, -0.984808, 0, 1, 0, 0.984808, 0, 0.17364801, 11, 1.1, -13)
-
-[node name="WallD" parent="Blockout" unique_id=2096599837 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(0, 3.090862e-08, 1.0000004, -1.2802773e-08, 1, -3.090863e-08, -1.0000004, -1.28027695e-08, 0, 15, 1.1, 9)
-
-[node name="WallE" parent="Blockout" unique_id=1243364728 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(-4.4703484e-08, 1.1313338e-08, 1.0000001, -1.489428e-09, 1, -1.13133405e-08, -1.0000001, -1.4894298e-09, -4.4703484e-08, -17, 1.1, 4)
-
-[node name="WallF" parent="Blockout" unique_id=1647859283 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(0.99999976, 2.1855698e-08, -2.0861626e-07, -2.1855687e-08, 1, 5.8562177e-09, 2.0861626e-07, -5.8562177e-09, 0.99999976, -2, 1.1, 15)
-
-[node name="WallG" parent="Blockout" unique_id=248536616 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(1.1313342e-08, -0.9659258, 0.2588191, -4.222197e-08, -0.25881904, -0.96592605, 1.0000002, 0, -4.37114e-08, -2.0477884, 5.240394, -20.969095)
-
-[node name="WallH" parent="Blockout" unique_id=1363575307 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(2.0690932, 0, 0, 0, 1, 0, 0, 0, 15.579002, 19.385427, -0.3190775, -2.397357)
-
-[node name="WallI" parent="Blockout" unique_id=798494039 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(1.0000002, 0, 0, 0, 1, 0, 0, 0, 1.0000002, 5.9252167, 1.1, 13.47286)
-
-[node name="WallJ" parent="Blockout" unique_id=2080110879 instance=ExtResource("8_xxkrt")]
-transform = Transform3D(-4.3711374e-08, 0, -0.9999997, 0, 1, 0, 0.9999997, 0, -4.3711374e-08, -18.525654, 1.1, -12.355759)
-
-[node name="BlockA2" parent="Blockout" unique_id=1421940810 instance=ExtResource("5_qbqft")]
-transform = Transform3D(4.054943, 0, 0, 0, 1, 0, 0, 0, 2.9839058, -3, 3.2963486, -19.784557)
-
-[node name="BlockA3" parent="Blockout" unique_id=1520539848 instance=ExtResource("5_qbqft")]
-transform = Transform3D(-4.371139e-08, 0, 3.3507695, 0, 2.633133, 0, -1, 0, -1.4646679e-07, 9.959882, 2.07381, -4.990782)
-
-[node name="AutoClimbA" parent="Blockout" unique_id=2048839106 instance=ExtResource("12_x6ida")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.048653, 0.3, 4.553279)
-
-[node name="AutoClimbB" parent="Blockout" unique_id=2054258950 instance=ExtResource("12_x6ida")]
-transform = Transform3D(1.6, 0, 0, 0, 2.295694, 0, 0, 0, 1, 9.537121, 0.0042553544, 0.27556682)
-
-[node name="HangClimbA" parent="Blockout" unique_id=513934980 instance=ExtResource("13_3frpg")]
-transform = Transform3D(3.3616178, 0, 0, 0, 0.58568347, 0, 0, 0, 1.7338251, 11.606419, 3.4604702, -3.6976833)
-
-[node name="HangClimbB" parent="Blockout" unique_id=1816639402 instance=ExtResource("13_3frpg")]
-transform = Transform3D(0, -3.090862e-08, -1.0000004, 1.2802773e-08, 1, -3.090863e-08, 1.0000004, -1.28027695e-08, 0, -13, 1.1, 8)
-
-[node name="DirectClimbA" parent="Blockout" unique_id=466968272 instance=ExtResource("14_nw3wt")]
-transform = Transform3D(1, 0, 0, 0, 2.0636473, 0, 0, 0, 2.210075, 9.590715, -0.28838873, -1.5907801)
-
-[node name="DirectClimbB" parent="Blockout" unique_id=138942862 instance=ExtResource("14_nw3wt")]
-transform = Transform3D(0, 3.090862e-08, 1.0000004, -1.2802773e-08, 1, -3.090863e-08, -1.0000004, -1.28027695e-08, 0, -13, 1.1, 12)
-
-[node name="BlockA4" parent="Blockout" unique_id=1968847105 instance=ExtResource("5_qbqft")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.5, -14)
-
-[node name="BlockA" parent="Blockout/BlockA4" unique_id=1806522395 instance=ExtResource("5_qbqft")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3981743, -1)
-
-[node name="WallLong" parent="Blockout" unique_id=381427759 instance=ExtResource("7_jvpvv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.144692, 1.1, 9.160692)
-
-[node name="Guards" type="Node3D" parent="." unique_id=1483041833]
-
-[node name="GuardA" parent="Guards" unique_id=945712971 instance=ExtResource("2_mrr7x")]
+[node name="Guard_01" parent="Guards" unique_id=1788305049 instance=ExtResource("3_guard")]
 transform = Transform3D(0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -7, 1, 2)
 
-[node name="GuardB" parent="Guards" unique_id=1658585002 instance=ExtResource("2_mrr7x")]
+[node name="Guard_02" parent="Guards" unique_id=1899481559 instance=ExtResource("3_guard")]
 transform = Transform3D(0.258819, 0, -0.965926, 0, 1, 0, 0.965926, 0, 0.258819, 8, 1, -9)
 
-[node name="GuardC" parent="Guards" unique_id=584996201 instance=ExtResource("2_mrr7x")]
+[node name="Guard_03" parent="Guards" unique_id=2133664200 instance=ExtResource("3_guard")]
 transform = Transform3D(-0.5, 0, 0.866025, 0, 1, 0, -0.866025, 0, -0.5, -15, 1, -10)
 
-[node name="GuardD" parent="Guards" unique_id=1415535677 instance=ExtResource("2_mrr7x")]
+[node name="Guard_04" parent="Guards" unique_id=778947700 instance=ExtResource("3_guard")]
 transform = Transform3D(0.866025, 0, 0.5, 0, 1, 0, -0.5, 0, 0.866025, 14, 1, 10)
 
-[node name="GuardE" parent="Guards" unique_id=230154146 instance=ExtResource("2_mrr7x")]
+[node name="Guard_05" parent="Guards" unique_id=1255949809 instance=ExtResource("3_guard")]
 transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -10, 1, 14)
 
-[node name="Audio" type="Node" parent="." unique_id=1656133128]
+[node name="Audio" type="Node" parent="." unique_id=143354420]
 
-[node name="StealthMusic" type="AudioStreamPlayer" parent="Audio" unique_id=1537538489]
-stream = ExtResource("9_e50gp")
+[node name="StealthMusic" type="AudioStreamPlayer" parent="Audio" unique_id=1316832268]
+stream = ExtResource("6_stealth_music")
 autoplay = true
 
-[node name="AlarmMusic" type="AudioStreamPlayer" parent="Audio" unique_id=1697545694]
-stream = ExtResource("10_1l11p")
+[node name="AlarmMusic" type="AudioStreamPlayer" parent="Audio" unique_id=892514736]
+stream = ExtResource("7_alarm_music")
 
-[node name="AlarmSound" type="AudioStreamPlayer" parent="Audio" unique_id=1817648780]
-stream = ExtResource("11_r8o7a")
+[node name="AlarmSound" type="AudioStreamPlayer" parent="Audio" unique_id=660319406]
+stream = ExtResource("8_alarm_sound")
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=252324355]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 0, 6, 0)
+light_energy = 1.677
+light_indirect_energy = 2.523
+light_volumetric_fog_energy = 2.676
+light_angular_distance = 6.0
+light_specular = 1.61
+shadow_enabled = true
+shadow_bias = 0.385
+shadow_normal_bias = 9.524
+shadow_transmittance_bias = -3.607
+shadow_opacity = 0.73

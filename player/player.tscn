@@ -8,10 +8,14 @@
 [ext_resource type="Script" uid="uid://bcg2gwfn3gqvc" path="res://scripts/player/components/player_crouch.gd" id="6_wnwt0"]
 [ext_resource type="Script" uid="uid://bh4rjx60xmhu8" path="res://scripts/player/components/player_ledge_climb.gd" id="7_8g3xw"]
 [ext_resource type="Script" uid="uid://bkopux22bgwyp" path="res://scripts/player/components/player_weapon.gd" id="8_bkclp"]
+[ext_resource type="Script" path="res://scripts/player/components/player_takedown.gd" id="9_1iqux"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_wtsm0"]
 radius = 0.35
 height = 1.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_1iqux"]
+radius = 2.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bx7td"]
 albedo_color = Color(0.2, 0.55, 0.9, 1)
@@ -34,6 +38,11 @@ mesh = SubResource("CapsuleMesh_xev22")
 
 [node name="WeaponOrigin" type="Node3D" parent="PlayerVisual" unique_id=680854578]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0.24663699, -0.55)
+
+[node name="TakedownArea" type="Area3D" parent="." unique_id=1918804381]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TakedownArea" unique_id=1156458897]
+shape = SubResource("SphereShape3D_1iqux")
 
 [node name="CameraPivot" type="Node3D" parent="." unique_id=1760962304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0488209, 0.65, 0)
@@ -83,9 +92,10 @@ script = ExtResource("3_xsx04")
 [node name="PlayerJump" type="Node" parent="Components" unique_id=1731100849]
 script = ExtResource("4_vyslf")
 
-[node name="PlayerMouseLook" type="Node" parent="Components" unique_id=62586671 node_paths=PackedStringArray("camera_pivot")]
+[node name="PlayerMouseLook" type="Node" parent="Components" unique_id=62586671 node_paths=PackedStringArray("camera_pivot", "camera")]
 script = ExtResource("5_11fbs")
 camera_pivot = NodePath("../../CameraPivot")
+camera = NodePath("../../CameraPivot/SpringArm3D/Camera3D")
 
 [node name="PlayerCrouch" type="Node" parent="Components" unique_id=1555133726 node_paths=PackedStringArray("collision_shape", "camera_pivot", "visual_capsule")]
 script = ExtResource("6_wnwt0")
@@ -102,3 +112,6 @@ script = ExtResource("8_bkclp")
 debug_draw_shots = true
 camera = NodePath("../../CameraPivot/SpringArm3D/Camera3D")
 weapon_origin = NodePath("../../PlayerVisual/WeaponOrigin")
+
+[node name="PlayerTakedown" type="Node" parent="Components" unique_id=1266713554]
+script = ExtResource("9_1iqux")

@@ -16,7 +16,7 @@ material = SubResource("StandardMaterial3D_k4l5c")
 radius = 0.35
 height = 1.8
 
-[node name="Guard" type="CharacterBody3D"]
+[node name="Guard" type="CharacterBody3D" groups=["guards"]]
 script = ExtResource("1_7nxq1")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

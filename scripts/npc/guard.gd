@@ -91,6 +91,13 @@ func take_damage(amount: int) -> void:
 		_knock_out()
 
 
+func take_takedown() -> void:
+	if is_knocked_out:
+		return
+
+	_knock_out()
+
+
 func _knock_out() -> void:
 	is_knocked_out = true
 	velocity = Vector3.ZERO

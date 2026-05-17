@@ -31,3 +31,7 @@ func is_crouch_held() -> bool:
 
 func is_crouching() -> bool:
 	return is_crouch_held()
+
+
+func is_aiming() -> bool:
+	return Input.is_action_pressed("aim")

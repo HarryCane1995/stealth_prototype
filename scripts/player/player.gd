@@ -6,9 +6,11 @@ extends CharacterBody3D
 @onready var player_mouse_look = $Components/PlayerMouseLook
 @onready var player_crouch = $Components/PlayerCrouch
 @onready var player_ledge_climb = $Components/PlayerLedgeClimb
+@onready var player_takedown = $Components/PlayerTakedown
 @onready var ledge_climb_prompt = $InteractionPrompt
 @onready var ledge_climb_prompt_label = $InteractionPrompt/PromptLabel
 
+const TAKEDOWN_PROMPT_TEXT := "F - Оглушить"
 const GRAB_PROMPT_TEXT := "Повиснуть - F"
 const CLIMB_PROMPT_TEXT := "Взобраться - F"
 
@@ -36,6 +38,7 @@ func _physics_process(delta: float) -> void:
 	var wants_drop: bool = wants_jump or move_direction.y > 0.5
 
 	if player_ledge_climb.is_hanging():
+		_update_aim_camera(delta, false)
 		_set_ledge_climb_prompt(CLIMB_PROMPT_TEXT, true)
 		if wants_crouch_drop:
 			_set_ledge_climb_prompt("", false)
@@ -49,12 +52,19 @@ func _physics_process(delta: float) -> void:
 
 	var was_climbing: bool = player_ledge_climb.is_climbing()
 	if player_ledge_climb.update_active_movement(self, delta, move_direction, false):
+		_update_aim_camera(delta, false)
 		if was_climbing and not player_ledge_climb.is_climbing():
 			player_crouch.reset_after_ledge_climb(self)
 		_set_ledge_climb_prompt("", false)
 		return
 
+	var can_takedown: bool = player_takedown.has_valid_target(self)
+	if can_takedown and wants_interact and player_takedown.try_takedown(self):
+		_set_ledge_climb_prompt("", false)
+		return
+
 	player_crouch.update_stance(self, delta, wants_crouch_pressed, player_input.is_crouch_held())
+	_update_aim_camera(delta, _can_use_aim_camera())
 	var climbable_ledge: Dictionary = player_ledge_climb.get_climbable_ledge(self, move_direction)
 	var can_auto_climb: bool = move_direction.length() > 0.1 and player_ledge_climb.is_auto_climb_ledge(climbable_ledge)
 	var can_hang_climb: bool = player_ledge_climb.is_hang_climb_ledge(climbable_ledge)
@@ -65,7 +75,9 @@ func _physics_process(delta: float) -> void:
 		if player_ledge_climb.start_climb(self, climbable_ledge):
 			return
 
-	if can_hang_climb:
+	if can_takedown:
+		_set_ledge_climb_prompt(TAKEDOWN_PROMPT_TEXT, true)
+	elif can_hang_climb:
 		_set_ledge_climb_prompt(GRAB_PROMPT_TEXT, true)
 	elif can_direct_climb:
 		_set_ledge_climb_prompt(CLIMB_PROMPT_TEXT, true)
@@ -100,3 +112,11 @@ func _set_ledge_climb_prompt(text: String, is_visible: bool) -> void:
 
 func _set_ledge_climb_prompt_visible(is_visible: bool) -> void:
 	_set_ledge_climb_prompt("", is_visible)
+
+
+func _update_aim_camera(delta: float, can_aim: bool) -> void:
+	player_mouse_look.update_aim_camera(delta, can_aim and player_input.is_aiming())
+
+
+func _can_use_aim_camera() -> bool:
+	return not player_crouch.is_crawling()

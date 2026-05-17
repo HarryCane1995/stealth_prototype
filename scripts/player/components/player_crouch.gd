@@ -70,6 +70,10 @@ func can_sprint() -> bool:
 	return current_stance == Stance.STANDING
 
 
+func is_crawling() -> bool:
+	return current_stance == Stance.CRAWLING
+
+
 func get_current_stance_name() -> String:
 	if current_stance == Stance.CROUCHING:
 		return "CROUCHING"
